@@ -1,0 +1,5 @@
+fastq/
+index/
+gencode.vM10.annotation.gtf
+.nextflow/
+work/

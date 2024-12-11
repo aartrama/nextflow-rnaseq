@@ -12,6 +12,7 @@ log.info"""\
 	index_path: ${index_path}
 	index_basename: ${index_basename}
     input_dir: ${input_dir}
+	gtf_file: ${gtf_file}
 	"""
 
 // Define the input channel
@@ -19,7 +20,9 @@ read_pairs_ch = Channel.fromFilePairs("${input_dir}/*_R{1,2}_001.{fastq,fq}{,.gz
                                         checkIfExists: true)
 
 process ALIGNMENT_STEP  {
-	cpus 4
+    cpus 4
+
+    container 'biocontainers/hisat2:v2.1.0-2-deb_cv1' 
      
     input:
     tuple val(pair_id), path(reads)
@@ -37,6 +40,7 @@ process ALIGNMENT_STEP  {
 process SORTED_BAM_STEP {
 
     cpus 4
+    container 'staphb/samtools:latest'
      
     input:
     tuple val(pair_id), path(sam_file)
@@ -51,6 +55,8 @@ process SORTED_BAM_STEP {
 }
 
 process COUNTS_STEP {
+
+    container 'thatdnaguy/featurecounts:latest'
      
     input:
     tuple val(pair_id), path(sorted_bam_file)
