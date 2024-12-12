@@ -30,10 +30,10 @@ process ALIGNMENT_STEP  {
     output:
     tuple val(pair_id), path("${pair_id}.sam"), emit: sam
     path("${pair_id}.txt"), emit: log
- 
+
     script:
     """
-    hisat2 -p $task.cpus -x ${index_path}/${index_basename} -1 ${reads[0]} -2 ${reads[1]} -S ${pair_id}.sam 2> ${pair_id}.txt
+    hisat2 -p $task.cpus -x ${index_path}/${index_basename} -1 ${reads[0]} -2 ${reads[1]} -S ${pair_id}.sam --summary-file ${pair_id}.txt
     """
 }
 

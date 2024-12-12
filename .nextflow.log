@@ -1,0 +1,88 @@
+Dec-12 15:05:32.329 [main] DEBUG nextflow.cli.Launcher - $> nextflow run rnaseq.nf
+Dec-12 15:05:32.648 [main] DEBUG nextflow.cli.CmdRun - N E X T F L O W  ~  version 24.10.2
+Dec-12 15:05:32.697 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/home/aarthi/.nextflow/plugins; core-plugins: nf-amazon@2.9.2,nf-azure@1.10.2,nf-cloudcache@0.4.2,nf-codecommit@0.2.2,nf-console@1.1.4,nf-google@1.15.2,nf-tower@1.9.3,nf-wave@1.7.4
+Dec-12 15:05:32.733 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Dec-12 15:05:32.735 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Dec-12 15:05:32.742 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.12.0 in 'deployment' mode
+Dec-12 15:05:32.773 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Dec-12 15:05:32.830 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /home/aarthi/Desktop/nextflow-rnaseq/nextflow.config
+Dec-12 15:05:32.838 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/aarthi/Desktop/nextflow-rnaseq/nextflow.config
+Dec-12 15:05:32.916 [main] DEBUG n.secret.LocalSecretsProvider - Secrets store: /home/aarthi/.nextflow/secrets/store.json
+Dec-12 15:05:32.925 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@3088660d] - activable => nextflow.secret.LocalSecretsProvider@3088660d
+Dec-12 15:05:32.942 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Dec-12 15:05:34.121 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 from script declaration
+Dec-12 15:05:34.161 [main] DEBUG nextflow.cli.CmdRun - Launching `rnaseq.nf` [lonely_yalow] DSL2 - revision: 67a3ae375f
+Dec-12 15:05:34.166 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Dec-12 15:05:34.167 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[]
+Dec-12 15:05:34.311 [main] DEBUG nextflow.Session - Session UUID: 5c042ed2-cbc4-46a9-99c2-44fb2da428f1
+Dec-12 15:05:34.313 [main] DEBUG nextflow.Session - Run name: lonely_yalow
+Dec-12 15:05:34.314 [main] DEBUG nextflow.Session - Executor pool size: 8
+Dec-12 15:05:34.339 [main] DEBUG nextflow.file.FilePorter - File porter settings maxRetries=3; maxTransfers=50; pollTimeout=null
+Dec-12 15:05:34.358 [main] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'FileTransfer' minSize=10; maxSize=24; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Dec-12 15:05:34.422 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 24.10.2 build 5932
+  Created: 27-11-2024 21:23 UTC (16:23 EDT)
+  System: Linux 5.4.0-150-generic
+  Runtime: Groovy 4.0.23 on OpenJDK 64-Bit Server VM 11.0.19+7-post-Ubuntu-0ubuntu118.04.1
+  Encoding: UTF-8 (UTF-8)
+  Process: 2911@rockstar [127.0.1.1]
+  CPUs: 8 - Mem: 15.6 GB (8.7 GB) - Swap: 2 GB (1.9 GB)
+Dec-12 15:05:34.484 [main] DEBUG nextflow.Session - Work-dir: /home/aarthi/Desktop/nextflow-rnaseq/work [ext2/ext3]
+Dec-12 15:05:34.486 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /home/aarthi/Desktop/nextflow-rnaseq/bin
+Dec-12 15:05:34.512 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Dec-12 15:05:34.540 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Dec-12 15:05:34.623 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+Dec-12 15:05:34.650 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 9; maxThreads: 1000
+Dec-12 15:05:34.878 [main] DEBUG nextflow.Session - Session start
+Dec-12 15:05:36.035 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+Dec-12 15:05:36.081 [main] INFO  nextflow.Nextflow - 	index_path: /home/aarthi/Desktop/nextflow-rnaseq/work/index/
+	index_basename: mm39
+    input_dir: /home/aarthi/Desktop/nextflow-rnaseq/work/fastq/move
+	gtf_file: /home/aarthi/Desktop/nextflow-rnaseq/work/gencode.vM10.annotation.gtf
+	
+Dec-12 15:05:36.598 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Dec-12 15:05:36.600 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Dec-12 15:05:36.617 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+Dec-12 15:05:36.636 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=8; memory=15.6 GB; capacity=8; pollInterval=100ms; dumpInterval=5m
+Dec-12 15:05:36.644 [main] DEBUG n.processor.TaskPollingMonitor - >>> barrier register (monitor: local)
+Dec-12 15:05:36.856 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Dec-12 15:05:36.856 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Dec-12 15:05:36.880 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+Dec-12 15:05:36.881 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+Dec-12 15:05:36.900 [main] DEBUG nextflow.Session - Workflow process names [dsl2]: SORTED_BAM_STEP, ALIGNMENT_STEP, COUNTS_STEP
+Dec-12 15:05:36.902 [main] DEBUG nextflow.Session - Igniting dataflow network (4)
+Dec-12 15:05:36.952 [PathVisitor-1] DEBUG nextflow.file.PathVisitor - files for syntax: glob; folder: /home/aarthi/Desktop/nextflow-rnaseq/work/fastq/move/; pattern: *_R{1,2}_001.{fastq,fq}{,.gz}; options: [checkIfExists:true]
+Dec-12 15:05:36.956 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > ALIGNMENT_STEP
+Dec-12 15:05:36.961 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > SORTED_BAM_STEP
+Dec-12 15:05:36.966 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > COUNTS_STEP
+Dec-12 15:05:36.976 [main] DEBUG nextflow.script.ScriptRunner - Parsed script files:
+  Script_d6acb2e894dff535: /home/aarthi/Desktop/nextflow-rnaseq/rnaseq.nf
+Dec-12 15:05:36.977 [main] DEBUG nextflow.script.ScriptRunner - > Awaiting termination 
+Dec-12 15:05:36.977 [main] DEBUG nextflow.Session - Session await
+Dec-12 15:05:37.659 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Dec-12 15:05:37.663 [Task submitter] INFO  nextflow.Session - [f4/b36f2a] Submitted process > ALIGNMENT_STEP (1)
+Dec-12 15:05:37.691 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Dec-12 15:05:37.693 [Task submitter] INFO  nextflow.Session - [5e/a2a428] Submitted process > ALIGNMENT_STEP (2)
+Dec-12 15:06:00.260 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 2; name: ALIGNMENT_STEP (2); status: COMPLETED; exit: 0; error: -; workDir: /home/aarthi/Desktop/nextflow-rnaseq/work/5e/a2a42804306dda5624b0fabbf91339]
+Dec-12 15:06:00.264 [Task monitor] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'TaskFinalizer' minSize=10; maxSize=24; workQueue=LinkedBlockingQueue[10000]; allowCoreThreadTimeout=false
+Dec-12 15:06:00.348 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 1; name: ALIGNMENT_STEP (1); status: COMPLETED; exit: 0; error: -; workDir: /home/aarthi/Desktop/nextflow-rnaseq/work/f4/b36f2a30fd4a43772af0f07d781c2b]
+Dec-12 15:06:00.357 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Dec-12 15:06:00.358 [Task submitter] INFO  nextflow.Session - [89/0788b9] Submitted process > SORTED_BAM_STEP (1)
+Dec-12 15:06:00.387 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Dec-12 15:06:00.389 [Task submitter] INFO  nextflow.Session - [86/b277df] Submitted process > SORTED_BAM_STEP (2)
+Dec-12 15:06:06.008 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 4; name: SORTED_BAM_STEP (2); status: COMPLETED; exit: 0; error: -; workDir: /home/aarthi/Desktop/nextflow-rnaseq/work/86/b277df2c394d728b6db3ea08e31287]
+Dec-12 15:06:06.042 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 3; name: SORTED_BAM_STEP (1); status: COMPLETED; exit: 0; error: -; workDir: /home/aarthi/Desktop/nextflow-rnaseq/work/89/0788b98fea90d7c544f724ff6141b7]
+Dec-12 15:06:06.057 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Dec-12 15:06:06.059 [Task submitter] INFO  nextflow.Session - [6e/2bbdf8] Submitted process > COUNTS_STEP (1)
+Dec-12 15:06:06.076 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+Dec-12 15:06:06.077 [Task submitter] INFO  nextflow.Session - [96/a7c77d] Submitted process > COUNTS_STEP (2)
+Dec-12 15:06:20.326 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 6; name: COUNTS_STEP (2); status: COMPLETED; exit: 0; error: -; workDir: /home/aarthi/Desktop/nextflow-rnaseq/work/96/a7c77d24d291206e5ae535542dd6bd]
+Dec-12 15:06:20.701 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 5; name: COUNTS_STEP (1); status: COMPLETED; exit: 0; error: -; workDir: /home/aarthi/Desktop/nextflow-rnaseq/work/6e/2bbdf81607457b1729e165bc0d1bae]
+Dec-12 15:06:20.709 [main] DEBUG nextflow.Session - Session await > all processes finished
+Dec-12 15:06:20.802 [Task monitor] DEBUG n.processor.TaskPollingMonitor - <<< barrier arrives (monitor: local) - terminating tasks monitor poll loop
+Dec-12 15:06:20.803 [main] DEBUG nextflow.Session - Session await > all barriers passed
+Dec-12 15:06:20.811 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'TaskFinalizer' shutdown completed (hard=false)
+Dec-12 15:06:20.823 [main] DEBUG n.trace.WorkflowStatsObserver - Workflow completed > WorkflowStats[succeededCount=6; failedCount=0; ignoredCount=0; cachedCount=0; pendingCount=0; submittedCount=0; runningCount=0; retriesCount=0; abortedCount=0; succeedDuration=4m 14s; failedDuration=0ms; cachedDuration=0ms;loadCpus=0; loadMemory=0; peakRunning=2; peakCpus=8; peakMemory=0; ]
+Dec-12 15:06:20.865 [main] DEBUG nextflow.cache.CacheDB - Closing CacheDB done
+Dec-12 15:06:20.914 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'FileTransfer' shutdown completed (hard=false)
+Dec-12 15:06:20.916 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye
