@@ -6,7 +6,7 @@ index_basename = params.index_basename
 input_dir = params.input_dir
 gtf_file = params.gtf_file
 pairedEnd = params.pairedEnd
-
+temp_dir = params.temp_dir
 // Print parameters
 log.info"""\
 	index_path: ${index_path}
@@ -20,9 +20,9 @@ read_pairs_ch = Channel.fromFilePairs("${input_dir}/*_R{1,2}_001.{fastq,fq}{,.gz
                                         checkIfExists: true)
 
 process ALIGNMENT_STEP  {
-    cpus 4
+    cpus 1
 
-    container 'biocontainers/hisat2:v2.1.0-2-deb_cv1' 
+    container 'aarthir239/hisat2' 
      
     input:
     tuple val(pair_id), path(reads)
@@ -33,14 +33,14 @@ process ALIGNMENT_STEP  {
 
     script:
     """
-    hisat2 -p $task.cpus -x ${index_path}/${index_basename} -1 ${reads[0]} -2 ${reads[1]} -S ${pair_id}.sam --summary-file ${pair_id}.txt
+    hisat2 -p $task.cpus -x ${index_path}/${index_basename} -1 ${reads[0]} -2 ${reads[1]} -S ${pair_id}.sam --summary-file ${pair_id}.txt --temp-directory ${temp_dir}
     """
 }
 
 process SORTED_BAM_STEP {
 
     cpus 4
-    container 'staphb/samtools:latest'
+    container 'staphb/samtools:1.21'
      
     input:
     tuple val(pair_id), path(sam_file)
@@ -56,7 +56,7 @@ process SORTED_BAM_STEP {
 
 process COUNTS_STEP {
 
-    container 'thatdnaguy/featurecounts:latest'
+    container 'thatdnaguy/featurecounts:v2.0.6_02'
      
     input:
     tuple val(pair_id), path(sorted_bam_file)
