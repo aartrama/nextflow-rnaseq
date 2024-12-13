@@ -65,7 +65,7 @@ process COUNTS_STEP {
     paired_end = !pairedEnd ? "" : "-p"
 
     """
-    featureCounts ${paired_end} -t exon -a ${gtf_file} -o ${pair_id}.counts.txt $sorted_bam_file 2> ${pair_id}.featureCounts.txt
+    featureCounts ${paired_end} -t exon -a ${gtf_file} -o ${pair_id}.counts.txt $sorted_bam_file 
     """
 }
 
