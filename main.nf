@@ -20,7 +20,7 @@ read_pairs_ch = Channel.fromFilePairs("${input_dir}/*_R{1,2}_001.{fastq,fq}{,.gz
                                         checkIfExists: true)
 
 process ALIGNMENT_STEP  {
-    cpus 1
+    cpus 4
 
     input:
     tuple val(pair_id), path(reads)
