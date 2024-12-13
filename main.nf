@@ -57,8 +57,7 @@ process COUNTS_STEP {
     tuple val(pair_id), path(sorted_bam_file)
 
     output:
-    path("${pair_id}.counts.txt"), emit: counts
-    path("${pair_id}.featureCounts.txt"), emit: log_featureCounts
+    path("${pair_id}.featureCounts.txt"), emit: counts
  
     script:
 
