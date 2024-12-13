@@ -22,8 +22,6 @@ read_pairs_ch = Channel.fromFilePairs("${input_dir}/*_R{1,2}_001.{fastq,fq}{,.gz
 process ALIGNMENT_STEP  {
     cpus 1
 
-    container 'aarthir239/hisat2' 
-     
     input:
     tuple val(pair_id), path(reads)
  
@@ -40,7 +38,6 @@ process ALIGNMENT_STEP  {
 process SORTED_BAM_STEP {
 
     cpus 4
-    container 'biocontainers/samtools:v1.9-4-deb_cv1'
      
     input:
     tuple val(pair_id), path(sam_file)
@@ -56,8 +53,6 @@ process SORTED_BAM_STEP {
 
 process COUNTS_STEP {
 
-    container 'thatdnaguy/featurecounts:v2.0.6_02'
-     
     input:
     tuple val(pair_id), path(sorted_bam_file)
 
