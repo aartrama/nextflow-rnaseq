@@ -40,7 +40,7 @@ process ALIGNMENT_STEP  {
 process SORTED_BAM_STEP {
 
     cpus 4
-    container 'staphb/samtools:1.21'
+    container 'biocontainers/samtools:v1.9-4-deb_cv1'
      
     input:
     tuple val(pair_id), path(sam_file)
