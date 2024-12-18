@@ -18,7 +18,7 @@ read_pairs_ch = Channel.fromFilePairs("${input_dir}/*_R{1,2}_001.{fastq,fq}{,.gz
                                         checkIfExists: true)
 
 process ALIGNMENT_STEP  {
-    cpus 4
+    cpus 1
 
     input:
     tuple val(pair_id), path(reads)
@@ -55,14 +55,15 @@ process COUNTS_STEP {
     tuple val(pair_id), path(sorted_bam_file)
 
     output:
-    path("${pair_id}.featureCounts.txt"), emit: counts
+    path("${pair_id}.counts.txt"), emit: counts
+    path("${pair_id}.featureCounts.txt"), emit: log_featureCounts
  
     script:
 
     paired_end = !pairedEnd ? "" : "-p"
 
     """
-    featureCounts ${paired_end} -t exon -a ${gtf_file} -o ${pair_id}.featureCounts.txt $sorted_bam_file 
+    featureCounts ${paired_end} -t exon -a ${gtf_file} -o ${pair_id}.counts.txt $sorted_bam_file 
     """
 }
 
@@ -74,6 +75,4 @@ workflow {
     sorted_bam_files_ch = SORTED_BAM_STEP(sam_files_ch.sam)
     count_files = COUNTS_STEP(sorted_bam_files_ch.bam)
 }
-
-
 
