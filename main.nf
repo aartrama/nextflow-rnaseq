@@ -1,7 +1,6 @@
 nextflow.enable.dsl=2
 
 // Set parameters
-index_path = params.index_path
 index_basename = params.index_basename
 input_dir = params.input_dir
 gtf_file = params.gtf_file
@@ -9,7 +8,6 @@ pairedEnd = params.pairedEnd
 temp_dir = params.temp_dir
 // Print parameters
 log.info"""\
-	index_path: ${index_path}
 	index_basename: ${index_basename}
     input_dir: ${input_dir}
 	gtf_file: ${gtf_file}
@@ -31,7 +29,7 @@ process ALIGNMENT_STEP  {
 
     script:
     """
-    hisat2 -p $task.cpus -x ${index_path}/${index_basename} -1 ${reads[0]} -2 ${reads[1]} -S ${pair_id}.sam --summary-file ${pair_id}.txt --temp-directory ${temp_dir}
+    hisat2 -p $task.cpus -x ${index_basename} -1 ${reads[0]} -2 ${reads[1]} -S ${pair_id}.sam --summary-file ${pair_id}.txt --temp-directory ${temp_dir}
     """
 }
 
