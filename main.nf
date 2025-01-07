@@ -6,18 +6,29 @@ input_dir = params.input_dir
 gtf_file = params.gtf_file
 pairedEnd = params.pairedEnd
 
-// Print parameters
-log.info"""\
-	index_basename: ${index_basename}
-    input_dir: ${input_dir}
-	gtf_file: ${gtf_file}
-	"""
-
 // Define the input channel
 read_pairs_ch = Channel.fromFilePairs("${input_dir}/*_R{1,2}_001.{fastq,fq}{,.gz}", 
                                         checkIfExists: true)
 
+process FASTQC {
+    publishDir "$params.project_dir/output/fastqc", mode: 'copy'
+
+    input:
+    tuple val(pair_id), path(reads)
+
+    output:
+    path("*.html"), emit: html_files
+    path("*.zip"), emit: zip_files
+
+    script:
+    """
+    fastqc ${reads} --outdir .
+    """ 
+
+}
+
 process ALIGNMENT_STEP  {
+    publishDir "$params.project_dir/output/bam", mode: 'copy'
     cpus 4
 
     input:
@@ -34,7 +45,7 @@ process ALIGNMENT_STEP  {
 }
 
 process SORTED_BAM_STEP {
-
+    publishDir "$params.project_dir/output/bam", mode: 'copy'
     cpus 4
      
     input:
@@ -50,6 +61,7 @@ process SORTED_BAM_STEP {
 }
 
 process COUNTS_STEP {
+    publishDir "$params.project_dir/output/counts", mode: 'copy'
 
     input:
     tuple val(pair_id), path(sorted_bam_file)
@@ -70,6 +82,7 @@ process COUNTS_STEP {
 
 // Define whole workflow
 workflow {
+    fastqc_files_ch = FASTQC(read_pairs_ch)
     sam_files_ch = ALIGNMENT_STEP(read_pairs_ch)
     sorted_bam_files_ch = SORTED_BAM_STEP(sam_files_ch.sam)
     count_files = COUNTS_STEP(sorted_bam_files_ch.bam)
