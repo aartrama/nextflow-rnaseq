@@ -5,6 +5,7 @@ index_basename = params.index_basename
 input_dir = params.input_dir
 gtf_file = params.gtf_file
 pairedEnd = params.pairedEnd
+project_dir = params.project_dir
 
 // Define the input channel
 read_pairs_ch = Channel.fromFilePairs("${input_dir}/*_R{1,2}_001.{fastq,fq}{,.gz}", 
@@ -78,14 +79,30 @@ process COUNTS_STEP {
     """
 }
 
+process MULTIQC_STEP {
+    publishDir "$params.project_dir/output", mode: 'copy'
 
+    input:
+    path("output")
+
+    output:
+    path("multiqc_report.html"), emit: report
+    path("multiqc_data"), emit: data
+
+    script:
+    """
+    multiqc ${project_dir}
+    """
+}
 
 // Define whole workflow
 workflow {
     fastqc_files_ch = FASTQC(read_pairs_ch)
     sam_files_ch = ALIGNMENT_STEP(read_pairs_ch)
     sorted_bam_files_ch = SORTED_BAM_STEP(sam_files_ch.sam)
-    count_files = COUNTS_STEP(sorted_bam_files_ch.bam)
+    count_files_ch = COUNTS_STEP(sorted_bam_files_ch.bam)
+    multiqc_report_file = MULTIQC_STEP(count_files_ch)
 }
+
 
 
