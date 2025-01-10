@@ -104,6 +104,44 @@ process COUNTS_STEP {
     """
 }
 
+process COUNTS_MATRIX {
+    
+    publishDir "$project_dir/output/counts", mode: 'copy'
+    cpus 4
+
+    input:
+    path(count_files)
+
+    output:
+    path("featureCounts.txt")
+
+    script:
+    """
+    #!/usr/bin/env python
+
+    import sys
+    import os 
+    import pandas as pd
+    dict_of_counts = {}
+    
+    for files in os.listdir("$project_dir/output/counts"):
+        sample = files.split(".")[0]
+        print(sample)
+        dict_of_counts[sample] = {}
+        with open("$project_dir/output/counts/"+files, "r") as infile:
+            next(infile)
+            next(infile)
+            for lines in infile:
+                lines = lines.strip().split("\\t")
+                dict_of_counts[sample][lines[0]] = int(float(lines[-1]))
+    
+    dataframe = pd.DataFrame(dict_of_counts)
+    dataframe.to_csv("featureCounts.txt", sep='\\t')
+    """
+
+
+}
+
 process MULTIQC_STEP {
     publishDir "$project_dir/output", mode: 'copy'
     cpus 4
@@ -128,6 +166,7 @@ workflow {
     sam_files_ch = ALIGNMENT_STEP(trimmed_files_ch.trimmed_reads)
     sorted_bam_files_ch = SORTED_BAM_STEP(sam_files_ch.sam)
     count_files_ch = COUNTS_STEP(sorted_bam_files_ch.bam)
+    counts_matrix = COUNTS_MATRIX(count_files_ch)
     multiqc_report_file = MULTIQC_STEP(count_files_ch)
 }
 
