@@ -6,13 +6,13 @@ index_basename = params.index_basename
 input_dir = params.input_dir
 gtf_file = params.gtf_file
 pairedEnd = params.pairedEnd
+multiqc_config = params.multiqc_config
 
 // Define the input channel 
 read_pairs_ch = Channel.fromFilePairs("${input_dir}/*_{R1,R2,1,2}{,_001,_S[0-9]+}{,_001}{,.fastq,.fq}{,.gz}", checkIfExists: true)
 
 process FASTQC {
     publishDir "$project_dir/output/fastqc", mode: 'copy'
-    cpus 4
 
     input:
     tuple val(pair_id), path(reads)
@@ -32,7 +32,6 @@ process FASTQC {
 process READ_TRIM_GALORE {
 
     publishDir "$project_dir/output/trim_galore", mode: 'copy'
-    cpus 4
     
     input:
     tuple val(pair_id), path(reads)
@@ -51,7 +50,6 @@ process READ_TRIM_GALORE {
 
 process ALIGNMENT_STEP  {
     publishDir "$project_dir/output/bam", mode: 'copy'
-    cpus 4
 
     input:
     tuple val(pair_id), path(trimmed_read1), path(trimmed_read2)
@@ -68,7 +66,6 @@ process ALIGNMENT_STEP  {
 
 process SORTED_BAM_STEP {
     publishDir "$project_dir/output/bam", mode: 'copy'
-    cpus 4
 
      
     input:
@@ -85,7 +82,6 @@ process SORTED_BAM_STEP {
 
 process COUNTS_STEP {
     publishDir "$project_dir/output/counts", mode: 'copy'
-    cpus 4
 
     input:
     tuple val(pair_id), path(sorted_bam_file)
@@ -105,7 +101,6 @@ process COUNTS_STEP {
 process COUNTS_MATRIX {
     
     publishDir "$project_dir/output/counts", mode: 'copy'
-    cpus 4
 
     input:
     path(count_files)
@@ -141,8 +136,7 @@ process COUNTS_MATRIX {
 }
 
 process MULTIQC_STEP {
-    publishDir "$project_dir/output", mode: 'copy'
-    cpus 4
+    publishDir "$project_dir/output/multiqc", mode: 'copy'
 
     input:
     path("output")
@@ -150,10 +144,11 @@ process MULTIQC_STEP {
     output:
     path("multiqc_report.html"), emit: report
     path("multiqc_data"), emit: data
+    path("multiqc_summary_text.txt")
 
     script:
     """
-    multiqc ${project_dir}
+    multiqc ${project_dir} --config ${multiqc_config} --force &> multiqc_summary_text.txt
     """
 }
 
