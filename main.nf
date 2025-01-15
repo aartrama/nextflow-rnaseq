@@ -7,9 +7,8 @@ input_dir = params.input_dir
 gtf_file = params.gtf_file
 pairedEnd = params.pairedEnd
 
-// Define the input channel
-read_pairs_ch = Channel.fromFilePairs("${input_dir}/*_R{1,2}_001.{fastq,fq}{,.gz}", 
-                                        checkIfExists: true)
+// Define the input channel 
+read_pairs_ch = Channel.fromFilePairs("${input_dir}/*_{R1,R2,1,2}{,_001,_S[0-9]+}{,_001}{,.fastq,.fq}{,.gz}", checkIfExists: true)
 
 process FASTQC {
     publishDir "$project_dir/output/fastqc", mode: 'copy'
@@ -39,12 +38,11 @@ process READ_TRIM_GALORE {
     tuple val(pair_id), path(reads)
     
     output:
-    tuple val(pair_id), path("${pair_id}_R1_001_val_1.fq.gz"), path("${pair_id}_R2_001_val_2.fq.gz"), emit: trimmed_reads
+    tuple val(pair_id), path("*_val_1.fq.gz"), path("*_val_2.fq.gz"), emit: trimmed_reads
     
     script:
 
     paired_end = !pairedEnd ? "" : " --paired"
-
     """
     trim_galore ${reads} ${paired_end}
     """
