@@ -11,7 +11,13 @@ count_unique = params.count_unique
 count_fraction = params.count_fraction
 
 // Define the input channel 
-read_pairs_ch = Channel.fromFilePairs("${input_dir}/*_{R1,R2,1,2}{,_001,_S[0-9]+}{,_001}{,.fastq,.fq}{,.gz}", checkIfExists: true)
+if (pairedEnd) {
+    read_pairs_ch = Channel.fromFilePairs("${input_dir}/*_{R1,R2,1,2}{,_001,_S[0-9]+}{,_001}{,.fastq,.fq}{,.gz}", checkIfExists: true)
+} else {
+    read_pairs_ch = Channel.fromPath("${params.input_dir}/*.{fastq,fq}{,.gz}", checkIfExists: true)
+        .map { file -> tuple(file.simpleName, file) }
+}
+
 
 process FASTQC {
     publishDir "$project_dir/output/fastqc", mode: 'copy'
@@ -39,7 +45,7 @@ process READ_TRIM_GALORE {
     tuple val(pair_id), path(reads)
     
     output:
-    tuple val(pair_id), path("*_val_1.fq.gz"), path("*_val_2.fq.gz"), emit: trimmed_reads
+    tuple val(pair_id), path("*fq.gz"), emit: trimmed_reads
     
     script:
 
@@ -54,15 +60,18 @@ process ALIGNMENT_STEP  {
     publishDir "$project_dir/output/bam", mode: 'copy'
 
     input:
-    tuple val(pair_id), path(trimmed_read1), path(trimmed_read2)
+    tuple val(pair_id), path(trimmed_reads)
  
     output:
     tuple val(pair_id), path("${pair_id}.sam"), emit: sam
     path("${pair_id}.txt"), emit: log
 
     script:
+
+    paired_end = !pairedEnd ? "-U ${trimmed_reads[0]}" : "-1 ${trimmed_reads[0]} -2 ${trimmed_reads[1]}"
+
     """
-    hisat2 -p $task.cpus -x ${index_basename} -1 ${trimmed_read1} -2 ${trimmed_read2} -S ${pair_id}.sam --summary-file ${pair_id}.txt --temp-directory \${PWD}
+    hisat2 -p $task.cpus -x ${index_basename} ${paired_end} -S ${pair_id}.sam --summary-file ${pair_id}.txt --temp-directory \${PWD}
     """
 }
 
