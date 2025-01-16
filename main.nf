@@ -7,6 +7,8 @@ input_dir = params.input_dir
 gtf_file = params.gtf_file
 pairedEnd = params.pairedEnd
 multiqc_config = params.multiqc_config
+count_unique = params.count_unique
+count_fraction = params.count_fraction
 
 // Define the input channel 
 read_pairs_ch = Channel.fromFilePairs("${input_dir}/*_{R1,R2,1,2}{,_001,_S[0-9]+}{,_001}{,.fastq,.fq}{,.gz}", checkIfExists: true)
@@ -87,14 +89,17 @@ process COUNTS_STEP {
     tuple val(pair_id), path(sorted_bam_file)
 
     output:
-    path("${pair_id}.featureCounts.txt"), emit: counts
+    path("${pair_id}.exon.txt"), emit: counts_exonic
+    path("${pair_id}.gene.txt"), emit: counts_genic
  
     script:
 
     paired_end = !pairedEnd ? "" : "-p"
+    count_scheme = count_unique ? "" : (count_fraction ? "-O --fraction" : "-O")
 
     """
-    featureCounts ${paired_end} -t exon -a ${gtf_file} -o ${pair_id}.featureCounts.txt $sorted_bam_file 
+    featureCounts ${paired_end} -t exon ${count_scheme} -a ${gtf_file} -o ${pair_id}.exon.txt $sorted_bam_file 
+    featureCounts ${paired_end} -t gene ${count_scheme} -a ${gtf_file} -o ${pair_id}.gene.txt $sorted_bam_file
     """
 }
 
@@ -103,10 +108,12 @@ process COUNTS_MATRIX {
     publishDir "$project_dir/output/counts", mode: 'copy'
 
     input:
-    path(count_files)
+    path(count_files_exonic)
+    path(count_files_genic)
 
     output:
-    path("featureCounts.txt")
+    path("featureCounts_genic.txt"), emit: count_matrix_genic
+    path("featureCounts_exonic.txt"), emit: count_matrix_exonic
 
     script:
     """
@@ -115,21 +122,32 @@ process COUNTS_MATRIX {
     import sys
     import os 
     import pandas as pd
-    dict_of_counts = {}
+    
+    gene_counts = {}
+    exon_counts = {}
     
     for files in os.listdir("$project_dir/output/counts"):
-        sample = files.split(".")[0]
-        print(sample)
-        dict_of_counts[sample] = {}
+        if "gene.txt" in files:
+            counts_dict = gene_counts
+        elif "exon.txt" in files:
+            counts_dict = exon_counts
+        else:
+            continue
+            
+        sample = files.split(".")[0] 
+        counts_dict[sample] = {}
         with open("$project_dir/output/counts/"+files, "r") as infile:
             next(infile)
             next(infile)
             for lines in infile:
                 lines = lines.strip().split("\\t")
-                dict_of_counts[sample][lines[0]] = int(float(lines[-1]))
+                counts_dict[sample][lines[0]] = int(float(lines[-1]))
     
-    dataframe = pd.DataFrame(dict_of_counts)
-    dataframe.to_csv("featureCounts.txt", sep='\\t')
+    gene_dataframe = pd.DataFrame(gene_counts)
+    exon_dataframe = pd.DataFrame(exon_counts)
+    gene_dataframe.to_csv("featureCounts_genic.txt", sep='\\t')
+    exon_dataframe.to_csv("featureCounts_exonic.txt", sep='\\t')
+
     """
 
 
@@ -160,7 +178,7 @@ workflow {
     sorted_bam_files_ch = SORTED_BAM_STEP(sam_files_ch.sam)
     count_files_ch = COUNTS_STEP(sorted_bam_files_ch.bam)
     counts_matrix = COUNTS_MATRIX(count_files_ch)
-    multiqc_report_file = MULTIQC_STEP(count_files_ch)
+    multiqc_report_file = MULTIQC_STEP(counts_matrix.count_matrix_genic)
 }
 
 
