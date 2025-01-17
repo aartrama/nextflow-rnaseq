@@ -50,7 +50,7 @@ Use the following command to execute the pipeline:
 For local execution, ensure nextflow and singularity is installed on your computer.
 
 ```bash
-nextflow run https://github.com/shenlab-sinai/NGS-Data-Charmer -r main -profile local
+nextflow run https://github.com/aartrama/nextflow-rnaseq -r main -profile local
 ```
 
 For cluster execution:
@@ -58,7 +58,7 @@ For cluster execution:
 ```bash
 module load singularity/3.11.0
 module load nextflow
-nextflow run https://github.com/shenlab-sinai/NGS-Data-Charmer -r main -profile minerva
+nextflow run https://github.com/aartrama/nextflow-rnaseq -r main -profile minerva
 ```
 
 ## Pipeline Steps
