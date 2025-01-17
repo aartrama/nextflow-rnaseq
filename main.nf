@@ -117,8 +117,7 @@ process COUNTS_MATRIX {
     publishDir "$project_dir/output/counts", mode: 'copy'
 
     input:
-    path(count_files_exonic)
-    path(count_files_genic)
+    path("output/counts/*txt")
 
     output:
     path("featureCounts_genic.txt"), emit: count_matrix_genic
@@ -131,11 +130,12 @@ process COUNTS_MATRIX {
     import sys
     import os 
     import pandas as pd
+
     
     gene_counts = {}
     exon_counts = {}
     
-    for files in os.listdir("$project_dir/output/counts"):
+    for files in "output/counts/*txt":
         if "gene.txt" in files:
             counts_dict = gene_counts
         elif "exon.txt" in files:
@@ -145,7 +145,7 @@ process COUNTS_MATRIX {
             
         sample = files.split(".")[0] 
         counts_dict[sample] = {}
-        with open("$project_dir/output/counts/"+files, "r") as infile:
+        with open(files, "r") as infile:
             next(infile)
             next(infile)
             for lines in infile:
@@ -161,6 +161,7 @@ process COUNTS_MATRIX {
 
 
 }
+
 
 process MULTIQC_STEP {
     publishDir "$project_dir/output/multiqc", mode: 'copy'
@@ -186,7 +187,7 @@ workflow {
     sam_files_ch = ALIGNMENT_STEP(trimmed_files_ch.trimmed_reads)
     sorted_bam_files_ch = SORTED_BAM_STEP(sam_files_ch.sam)
     count_files_ch = COUNTS_STEP(sorted_bam_files_ch.bam)
-    counts_matrix = COUNTS_MATRIX(count_files_ch)
+    counts_matrix = COUNTS_MATRIX(count_files_ch.counts_exonic)
     multiqc_report_file = MULTIQC_STEP(counts_matrix.count_matrix_genic)
 }
 
