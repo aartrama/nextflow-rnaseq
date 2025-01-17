@@ -30,7 +30,7 @@ Update the following parameters in your Nextflow config file:
 | `count_fraction`    | Count fractional values for multi-mapped reads.                                             | `false` |
 
 Place nextflow.config file in your project directory. Your project directory should also contain a folder called 'fastq' containing your fastq files. Following should be the project directory structure :
-
+```
 .
 ├── fastq
 │   ├── gut2_R1_001.fastq.gz
@@ -40,7 +40,7 @@ Place nextflow.config file in your project directory. Your project directory sho
 │   ├── gut_R1.fastq.gz
 │   └── gut_R2.fastq.gz
 └── nextflow.config
-
+```
 
 ## Usage
 
