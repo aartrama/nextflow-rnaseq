@@ -177,6 +177,7 @@ process MULTIQC_STEP {
     path("multiqc_summary_text.txt")
 
     script:
+   
     """
     multiqc ${project_dir} --config ${multiqc_config} --force &> multiqc_summary_text.txt
     """
