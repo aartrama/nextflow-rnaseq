@@ -21,7 +21,8 @@ Copy the nextflow.config file from this repository and place it in your project 
 | Parameter           | Description                                                                                  | Default Value |
 |---------------------|----------------------------------------------------------------------------------------------|---------------|
 | `project_dir`       | Base directory for the pipeline output.                                                     | `/path/to/project` |
-| `index_basename`    | Path to the HISAT2 index basename.                                                          | `/path/to/index` |
+| `index_files`    | Path to the HISAT2 index files.                                                          | `/path/to/index` |
+| `index_basename`    | The index basename                                                          | `mm39` |
 | `gtf_file`          | Path to the GTF annotation file.                                                            | `/path/to/gtf` |
 | `pairedEnd`         | Whether the data is paired-end (`true` or `false`).                                         | `true` |
 | `multiqc_config`    | Path to MultiQC configuration file.                                                         | `/path/to/multiqc_config.yaml` |
