@@ -21,10 +21,9 @@ Copy the nextflow.config file from this repository and place it in your project 
 | Parameter           | Description                                                                                  | Default Value |
 |---------------------|----------------------------------------------------------------------------------------------|---------------|
 | `project_dir`       | Base directory for the pipeline output.                                                     | `/path/to/project` |
-| `input_dir`         | Input directory containing FASTQ files.                                                     | `/path/to/input` |
 | `index_basename`    | Path to the HISAT2 index basename.                                                          | `/path/to/index` |
 | `gtf_file`          | Path to the GTF annotation file.                                                            | `/path/to/gtf` |
-| `pairedEnd`         | Whether the data is paired-end (`true` or `false`).                                         | `false` |
+| `pairedEnd`         | Whether the data is paired-end (`true` or `false`).                                         | `true` |
 | `multiqc_config`    | Path to MultiQC configuration file.                                                         | `/path/to/multiqc_config.yaml` |
 | `count_unique`      | Count only uniquely mapped reads.                                                           | `true` |
 | `count_fraction`    | Count fractional values for multi-mapped reads.                                             | `false` |
