@@ -47,9 +47,12 @@ Place nextflow.config file in your project directory. Your project directory sho
 **Run the pipeline**  
 Use the following command to execute the pipeline:
 
-For local execution, ensure nextflow and singularity is installed on your computer.
+For interactive node execution:
 
 ```bash
+module load singularity/3.11.0
+module load nextflow
+nodule load git
 nextflow run https://github.com/aartrama/nextflow-rnaseq -r main -profile local
 ```
 
@@ -58,6 +61,7 @@ For cluster execution:
 ```bash
 module load singularity/3.11.0
 module load nextflow
+nodule load git
 nextflow run https://github.com/aartrama/nextflow-rnaseq -r main -profile minerva
 ```
 
