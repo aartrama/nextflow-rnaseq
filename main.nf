@@ -2,8 +2,10 @@ nextflow.enable.dsl=2
 
 // Set parameters
 project_dir = params.project_dir
+index_files = params.index_files
 index_basename = params.index_basename
 input_dir = "$project_dir"+'/fastq'
+index_full_path = "$index_files"+"/"+"$index_basename"
 gtf_file = params.gtf_file
 pairedEnd = params.pairedEnd
 multiqc_config = params.multiqc_config
@@ -71,7 +73,7 @@ process ALIGNMENT_STEP  {
     paired_end = !pairedEnd ? "-U ${trimmed_reads[0]}" : "-1 ${trimmed_reads[0]} -2 ${trimmed_reads[1]}"
 
     """
-    hisat2 -p $task.cpus -x ${index_basename} ${paired_end} -S ${pair_id}.sam --summary-file ${pair_id}.txt --temp-directory \${PWD}
+    hisat2 -p $task.cpus -x ${index_full_path} ${paired_end} -S ${pair_id}.sam --summary-file ${pair_id}.txt --temp-directory \${PWD}
     """
 }
 
