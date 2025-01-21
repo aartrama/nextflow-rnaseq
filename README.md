@@ -16,7 +16,7 @@ This repository contains a Nextflow pipeline for processing bulk RNA-seq data. T
 
 ### Configuration Parameters
 
-Update the following parameters in your Nextflow config file:
+Copy the nextflow.config file from this repository and place it in your project folder. Your project folder should contain a directory called 'fastq' in which all fastq files are placed. Update the following parameters in your Nextflow config file:
 
 | Parameter           | Description                                                                                  | Default Value |
 |---------------------|----------------------------------------------------------------------------------------------|---------------|
