@@ -3,7 +3,7 @@ nextflow.enable.dsl=2
 // Set parameters
 project_dir = params.project_dir
 index_basename = params.index_basename
-input_dir = params.input_dir
+input_dir = "$project_dir"+'/fastq'
 gtf_file = params.gtf_file
 pairedEnd = params.pairedEnd
 multiqc_config = params.multiqc_config
@@ -14,7 +14,7 @@ count_fraction = params.count_fraction
 if (pairedEnd) {
     read_pairs_ch = Channel.fromFilePairs("${input_dir}/*_{R1,R2,1,2}{,_001,_S[0-9]+}{,_001}{,.fastq,.fq}{,.gz}", checkIfExists: true)
 } else {
-    read_pairs_ch = Channel.fromPath("${params.input_dir}/*.{fastq,fq}{,.gz}", checkIfExists: true)
+    read_pairs_ch = Channel.fromPath("${input_dir}/*.{fastq,fq}{,.gz}", checkIfExists: true)
         .map { file -> tuple(file.simpleName, file) }
 }
 
