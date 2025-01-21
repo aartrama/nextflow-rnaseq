@@ -52,7 +52,7 @@ For interactive node execution:
 ```bash
 module load singularity/3.11.0
 module load nextflow
-nodule load git
+module load git
 nextflow run https://github.com/aartrama/nextflow-rnaseq -r main -profile local
 ```
 
@@ -61,7 +61,7 @@ For cluster execution:
 ```bash
 module load singularity/3.11.0
 module load nextflow
-nodule load git
+module load git
 nextflow run https://github.com/aartrama/nextflow-rnaseq -r main -profile minerva
 ```
 
