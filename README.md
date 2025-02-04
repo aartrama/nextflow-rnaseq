@@ -18,7 +18,7 @@ This repository contains a Nextflow pipeline for processing bulk RNA-seq data. T
 Start an interactive session using the following command -
 
 ```bash
-bsub -P acc_Nestlerlab -q interactive -R span[hosts=1] -n 8 -W 02:00 -Ip /bin/bash
+bsub -P acc_Nestlerlab -q interactive -R span[hosts=1] -n 8 -W 00:30 -Ip /bin/bash
 ```
 
 Copy the setup.sh file from this repository to your project folder and set the temp and singularity cache folder. Run the script using -
