@@ -13,6 +13,22 @@ This repository contains a Nextflow pipeline for processing bulk RNA-seq data. T
 - Singularity containerized execution.
 - Flexible customization for local or LSF cluster-based execution
 
+## One Time Setup
+
+Start an interactive session using the following command -
+
+```bash
+bsub -P acc_Nestlerlab -q interactive -R span[hosts=1] -n 8 -W 02:00 -Ip /bin/bash
+```
+
+Copy the setup.sh file from this repository to your project folder and set the temp and singularity cache folder. Run the script using -
+
+```bash
+sh setup.sh
+```
+
+Setup should take about 10 minutes.
+
 
 ### Configuration Parameters
 
