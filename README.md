@@ -30,7 +30,7 @@ sh setup.sh
 Setup should take about 10 minutes.
 
 
-### Configuration Parameters
+## Configuration Parameters
 
 Copy the nextflow.config file from this repository and place it in your project folder. Your project folder should contain a directory called 'fastq' in which all fastq files are placed. Update the following parameters in your Nextflow config file:
 
