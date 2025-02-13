@@ -41,7 +41,7 @@ process FASTQC {
 
 process READ_TRIM_GALORE {
 
-    publishDir "$project_dir/output/trim_galore", mode: 'copy'
+    publishDir "$project_dir/output/trim_galore", mode: 'copy', pattern: "*_trimming_report.txt"
     
     input:
     tuple val(pair_id), path(reads)
@@ -59,7 +59,7 @@ process READ_TRIM_GALORE {
 
 
 process ALIGNMENT_STEP  {
-    publishDir "$project_dir/output/bam", mode: 'copy'
+    publishDir "$project_dir/output/bam", mode: 'copy', pattern: "*.txt"
 
     input:
     tuple val(pair_id), path(trimmed_reads)
