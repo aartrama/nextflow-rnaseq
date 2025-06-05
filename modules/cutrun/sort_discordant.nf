@@ -4,7 +4,8 @@ process SORT_DISCORDANT_CUTRUN {
     tuple val(pair_id), path(bam_file)
 
     output:
-    tuple val(pair_id), path("${pair_id}_mapped_paired.bam"), path("${pair_id}_mapped_dis.bam"), emit: bam
+    tuple val(pair_id), path("${pair_id}_mapped_dis.bam"), emit: mapped_dis_bam
+    tuple val(pair_id), path("${pair_id}_mapped_paired.bam"), emit: mapped_paired_bam
  
     script:
     """

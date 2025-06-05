@@ -27,8 +27,8 @@ workflow CHIPSEQ {
     chrbam = RMDUP_TO_CHRBAM(rmdup_bam.bam)
     bw_ch = CREATE_BW(chrbam.bam)
     bed_files_ch = CREATE_BED(chrbam.bam)
-    if (pairedEnd) insert_size_ch = CALC_INSERT_SIZE(rmdup_bam.bam)
-    multiqc_ch = RUN_MULTIQC(bed_files_ch.bed)
+    if (params.pairedEnd) insert_size_ch = CALC_INSERT_SIZE(rmdup_bam.bam)
+    multiqc_ch = RUN_MULTIQC(bed_files_ch)
 
     emit:
     multiqc_report = multiqc_ch.report

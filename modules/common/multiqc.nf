@@ -10,8 +10,8 @@ process RUN_MULTIQC {
     path("multiqc_summary_text.txt")
 
     script:
-    qc_config = multiqc_config
+    qc_config = params.multiqc_config
     """
-    multiqc ${project_dir} --config ${qc_config} --force &> multiqc_summary_text.txt
+    multiqc ${params.project_dir} --config ${qc_config} --force &> multiqc_summary_text.txt
     """
 }

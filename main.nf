@@ -21,9 +21,9 @@ params.polyA = false
 
 // Define the input channel 
 if (params.pairedEnd) {
-    read_pairs_ch = Channel.fromFilePairs("${params.project_dir}/fastq/*_{R1,R2,1,2},{,_001,_S[0-9]+},{,_001},{,.fastq,.fq},{,.gz}", checkIfExists: true)
+    read_pairs_ch = Channel.fromFilePairs("${params.project_dir}/fastq/*_{R1,R2,1,2}{,_001,_S[0-9]+}{,_001}{,.fastq,.fq}{,.gz}", checkIfExists: true)
 } else {
-    read_pairs_ch = Channel.fromPath("${params.project_dir}/fastq/*.{fastq,fq},{,.gz}", checkIfExists: true)
+    read_pairs_ch = Channel.fromPath("${params.project_dir}/fastq/*.{fastq,fq}{,.gz}", checkIfExists: true)
         .map { file -> tuple(file.simpleName, file) }
 }
 

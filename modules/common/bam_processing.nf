@@ -25,18 +25,14 @@ process PICARD_RMDUPS_BAM {
     tuple val(pair_id), path("${pair_id}_marked_dup_metrics.txt"), emit: qc
 
     script:
-    stringency = experiment_type == "cutrun" ? "" : "-VALIDATION_STRINGENCY SILENT "
-    if ( experiment_type == "cutrun" )
+    stringency = params.experiment_type == "cutrun" ? "" : "-VALIDATION_STRINGENCY SILENT "
+    if ( params.experiment_type == "cutrun" )
     """
-    java -jar /usr/local/bin/picard/picard.jar MarkDuplicates REMOVE_DUPLICATES=true I=${bam_file} \
-             O=${pair_id}.unique.sorted.rmdup.bam M=${pair_id}_marked_dup_metrics.txt VALIDATION_STRINGENCY=SILENT \
-                        2> ${pair_id}.rmdup.log
+    picard MarkDuplicates REMOVE_DUPLICATES=true I=${bam_file} O=${pair_id}.unique.sorted.rmdup.bam M=${pair_id}_marked_dup_metrics.txt VALIDATION_STRINGENCY=SILENT 2> ${pair_id}.rmdup.log
     """
-    else if ( experiment_type != "cutrun" )
+    else if ( params.experiment_type != "cutrun" )
     """
-    java -jar /usr/local/bin/picard/picard.jar MarkDuplicates REMOVE_DUPLICATES=true I=${bam_file} \
-             O=${pair_id}.unique.sorted.rmdup.bam M=${pair_id}_marked_dup_metrics.txt \
-                        2> ${pair_id}.rmdup.log
+    picard MarkDuplicates REMOVE_DUPLICATES=true I=${bam_file} O=${pair_id}.unique.sorted.rmdup.bam M=${pair_id}_marked_dup_metrics.txt 2> ${pair_id}.rmdup.log
     """
 
 }

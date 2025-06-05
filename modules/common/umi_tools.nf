@@ -8,7 +8,7 @@ process READ_TRIM_UMI{
     tuple val(pair_id), path("*.fq.gz"), emit: trimmed_reads
  
     script:
-    if( !pairedEnd )
+    if( !params.pairedEnd )
         """
         umi_tools extract --stdin=${reads} --bc-pattern=${params.umi_1} --stdout ${pair_id}_R1_trimmed.fq.gz
         """
@@ -29,7 +29,7 @@ process UMI_RMDUPS_BAM {
     tuple val(pair_id), path("${pair_id}.rmdup.log"), emit: qc
 
     script:
-    pe =  pairedEnd ? "--paired --unmapped-reads=use" : ""
+    pe =  params.pairedEnd ? "--paired --unmapped-reads=use" : ""
     """
     umi_tools dedup --stdin=$bam_file --log=${pair_id}.rmdup.log $pe > ${pair_id}.unique.sorted.rmdup.bam
     """

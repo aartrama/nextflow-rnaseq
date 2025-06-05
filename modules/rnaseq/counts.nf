@@ -10,11 +10,11 @@ process COUNTS_STEP {
  
     script:
 
-    paired_end = !pairedEnd ? "" : "-p"
-    count_scheme = count_unique ? "" : (count_fraction ? "-O --fraction" : "-O")
+    paired_end = !params.pairedEnd ? "" : "-p"
+    count_scheme = params.count_unique ? "" : (params.count_fraction ? "-O --fraction" : "-O")
 
     """
-    featureCounts ${paired_end} -t exon ${count_scheme} -a ${gtf_file} -o ${pair_id}.exon.txt $sorted_bam_file 
-    featureCounts ${paired_end} -t gene ${count_scheme} -a ${gtf_file} -o ${pair_id}.gene.txt $sorted_bam_file
+    featureCounts ${paired_end} -t exon ${count_scheme} -a ${params.gtf_file} -o ${pair_id}.exon.txt $sorted_bam_file 
+    featureCounts ${paired_end} -t gene ${count_scheme} -a ${params.gtf_file} -o ${pair_id}.gene.txt $sorted_bam_file
     """
 }

@@ -3,8 +3,8 @@ process MERGE_DISCORDANT_CUTRUN {
     cpus 1
      
     input:
-    tuple val(pair_id), path(clip_bam)
-    tuple val(pair_id_2), path(mapped_bam), path(dis_bam)
+    tuple val(pair_id), path(mapped_bam) 
+    tuple val(pair_id), path(clipped_dis_bam)
 
     output:
     tuple val(pair_id), path("${pair_id}.sorted.bam"), path("${pair_id}.sorted.bam.bai"), emit: bam
@@ -12,11 +12,11 @@ process MERGE_DISCORDANT_CUTRUN {
     script:
     """
     ## combine non-discord and filtered discordant pairs
-    samtools merge -f -@ ${task.cpus} ${pair_id}_filtered.bam \
+    samtools merge -f -@ 1 ${pair_id}_filtered.bam \
                 ${mapped_bam} \
-                ${clip_bam}
+                ${clipped_dis_bam}
     ## sort combined bam file
-    samtools sort -@ ${task.cpus} -O BAM -o ${pair_id}.sorted.bam ${pair_id}_filtered.bam
+    samtools sort -@ 1 -O BAM -o ${pair_id}.sorted.bam ${pair_id}_filtered.bam
     samtools index ${pair_id}.sorted.bam ${pair_id}.sorted.bam.bai
     """
 
