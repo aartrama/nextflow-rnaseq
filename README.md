@@ -1,17 +1,22 @@
-# Nextflow RNA-Seq Pipeline 
+# Nextflow Pipeline 
 
-This repository contains a Nextflow pipeline for processing bulk RNA-seq data. The workflow performs quality control, read trimming, alignment, feature counting, and summarization using MultiQC.
+This repository contains a Nextflow pipeline for processing bulk RNA-seq, ChIP-seq and Cut&Run datasets. 
+
+RNA-seq workflow performs quality control, read trimming, alignment, feature counting, and summarization using MultiQC.
+
+ChIP-seq and Cut&Run workflows perform quality control, read trimming, alignment, generation of sorted bam, bigwig, tdf, indexed bam files and summarization using MultiQC.
+
 
 ## Dependency
 
-- [Nextflow](https://www.nextflow.io/)
-- [Singularity](https://docs.sylabs.io/guides/3.0/user-guide/index.html)
+[Nextflow](https://www.nextflow.io/)
+[Singularity](https://docs.sylabs.io/guides/3.0/user-guide/index.html)
 
 ## Features
 
-- Support for single-end and paired-end RNA-Seq data
-- Singularity containerized execution.
-- Flexible customization for local or LSF cluster-based execution
+Support for single-end and paired-end RNA-Seq data
+Singularity containerized execution.
+Flexible customization for local or LSF cluster-based execution
 
 ## One Time Setup
 
@@ -21,31 +26,18 @@ Start an interactive session using the following command -
 bsub -P acc_Nestlerlab -q interactive -R span[hosts=1] -n 8 -W 00:30 -Ip /bin/bash
 ```
 
-Copy the setup.sh file from this repository to your project folder and set the temp and singularity cache folder. Run the script using -
+Copy the setup.sh file from this repository to your project folder and set the singularity temp and cache folder in it. You do not need to modify anything else. Run the script using -
 
 ```bash
 sh setup.sh
 ```
 
-Setup should take about 10 minutes.
+Setup should take ~ 10-15 minutes.
 
 
 ## Configuration Parameters
 
-Copy the nextflow.config file from this repository and place it in your project folder. Your project folder should contain a directory called 'fastq' in which all fastq files are placed. Update the following parameters in your Nextflow config file:
-
-| Parameter           | Description                                                                                  | Default Value |
-|---------------------|----------------------------------------------------------------------------------------------|---------------|
-| `project_dir`       | Base directory for the pipeline output.                                                     | `/path/to/project` |
-| `index_files`    | Path to the HISAT2 index files.                                                          | `/path/to/index` |
-| `index_basename`    | The index basename                                                          | `mm39` |
-| `gtf_file`          | Path to the GTF annotation file.                                                            | `/path/to/gtf/mouse_genome_mm39.gtf` |
-| `pairedEnd`         | Whether the data is paired-end (`true` or `false`).                                         | `true` |
-| `multiqc_config`    | Path to MultiQC configuration file.                                                         | `/path/to/multiqc_config.yaml` |
-| `count_unique`      | Count only uniquely mapped reads.                                                           | `true` |
-| `count_fraction`    | Count fractional values for multi-mapped reads.                                             | `false` |
-
-Place nextflow.config file in your project directory. Your project directory should also contain a folder called 'fastq' containing your fastq files. Following should be the project directory structure :
+Copy the nextflow.config file from this repository and place it in your project folder. Your project folder should contain a directory called 'fastq' in which all fastq files are placed. Following should be the project folder structure :
 ```
 .
 ├── fastq
@@ -56,7 +48,30 @@ Place nextflow.config file in your project directory. Your project directory sho
 │   ├── gut_R1.fastq.gz
 │   └── gut_R2.fastq.gz
 └── nextflow.config
+
 ```
+
+Update the following parameters in your Nextflow config file:
+
+| Parameter           | Description                                                                                  | Default Value |
+|---------------------|----------------------------------------------------------------------------------------------|---------------|
+| `project_dir`       | Base directory for the pipeline output.                                                     | '/path/to/project' |
+| `index_files`    | Path to the HISAT2 index files.                                                          | '/path/to/index' |
+| `index_basename`    | The index basename                                                          | 'mm39' |
+| `experiment_type`    | Choose one among chipseq, rnaseq or cutrun                                                         | 'chipseq' |
+| `multiqc_config`    | Path to multiqc config file. You can find one in this repo                                                         | "/path/to/multiqc_config.yaml" |
+
+| `umi_present`          | Whether or not the library is UMI based                                                            | false |
+| `umi_1`          | UMI sequence extracted from Read 1                                                             | "X" |
+| `umi_2`          | UMI sequence extracted from Read 2                                                           | "NNNNNNNN" |
+| `gtf_file`          | Path to the GTF annotation file.                                                            | "/path/to/gtf/mouse_genome_mm39.gtf" |
+| `pairedEnd`         | Whether the data is paired-end (`true` or `false`).                                         | true |
+| `count_unique`      | Count only uniquely mapped reads.                                                           | true |
+| `count_fraction`    | Count fractional values for multi-mapped reads.                                             | false |
+| `polyA`    | Whether the library is polyA based                                             | false |
+| `singularity cacheDir`    | Set it to the same one you used in setup.sh                                            | "/path/to/singularity/cachedir" |
+
+
 
 ## Usage
 
@@ -81,28 +96,6 @@ module load git
 nextflow run https://github.com/aartrama/nextflow-rnaseq -r main -profile minerva
 ```
 
-## Pipeline Steps
-
-1. **FASTQC**  
-   Performs quality control on raw sequencing reads using FastQC.
-
-2. **Trim Galore**  
-   Trims low-quality regions and adapter sequences from reads.
-
-3. **HISAT2 Alignment**  
-   Aligns trimmed reads to a reference genome using HISAT2.
-
-4. **SAM to BAM Conversion**  
-   Sorts and converts SAM files to BAM format using Samtools.
-
-5. **Feature Counts**  
-   Generates gene- and exon-level count matrices using featureCounts.
-
-6. **Counts Matrix Generation**  
-   Compiles counts from all samples into final matrix files.
-
-7. **MultiQC Report**  
-   Summarizes results from previous steps into an HTML report.
 
 ## References
 
@@ -115,5 +108,23 @@ nextflow run https://github.com/aartrama/nextflow-rnaseq -r main -profile minerv
 [HISAT2](http://daehwankimlab.github.io/hisat2/manual/)
 
 [FeatureCounts](https://subread.sourceforge.net/featureCounts.html)
+
+[Samtools](http://www.htslib.org/)
+
+[UMI-tools](https://umi-tools.readthedocs.io/en/latest/)
+
+[BamUtil](https://genome.sph.umich.edu/wiki/BamUtil)
+
+[Bedtools](https://bedtools.readthedocs.io/en/latest/)
+
+[deepTools](https://deeptools.readthedocs.io/en/develop/)
+
+[Picard](https://broadinstitute.github.io/picard/)
+
+[Pandas](https://pandas.pydata.org/docs/)
+
+[MultiQC](https://multiqc.info/)
+
+
 
 
