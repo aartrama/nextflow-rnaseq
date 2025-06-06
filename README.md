@@ -60,7 +60,6 @@ Update the following parameters in your Nextflow config file:
 | `index_basename`    | The index basename                                                          | 'mm39' |
 | `experiment_type`    | Choose one among chipseq, rnaseq or cutrun                                                         | 'chipseq' |
 | `multiqc_config`    | Path to multiqc config file. You can find one in this repo                                                         | "/path/to/multiqc_config.yaml" |
-
 | `umi_present`          | Whether or not the library is UMI based                                                            | false |
 | `umi_1`          | UMI sequence extracted from Read 1                                                             | "X" |
 | `umi_2`          | UMI sequence extracted from Read 2                                                           | "NNNNNNNN" |
